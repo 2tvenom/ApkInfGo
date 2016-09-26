@@ -7,6 +7,7 @@ import (
 	"os/exec"
 	"regexp"
 	"runtime"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -19,7 +20,7 @@ type ApkInfoSt struct {
 	Icon               string
 	SdkVersion         uint16
 	TargetSdkVersion   uint16
-	NativeCode         string
+	NativeCode         []string
 	FileSize           int64
 	FilePath           string
 	Cert               ApkCertSt
@@ -96,7 +97,8 @@ func parse(c *Conf, apk string) *ApkInfoSt {
 			info.TargetSdkVersion = uint16(targetSdkVersion)
 		case "native-code":
 			nativeCode := strings.Trim(strings.TrimSpace(arr[1]), "'")
-			info.NativeCode = nativeCode
+			info.NativeCode = strings.Split(nativeCode, "' '")
+			sort.Strings(info.NativeCode)
 		case "application":
 			//log.Printf("application - %q\n", arr[1])
 			re2 := regexp.MustCompile("label='([^']+)?' icon='([^']+)?'")
