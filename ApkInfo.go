@@ -96,6 +96,7 @@ func parse(c *Conf, apk string) *ApkInfoSt {
 			targetSdkVersion, _ := strconv.ParseUint(strings.Trim(arr[1], "'"), 0, 16)
 			info.TargetSdkVersion = uint16(targetSdkVersion)
 		case "native-code":
+			arr[1] = strings.Replace(arr[1], "''", "", -1)
 			nativeCode := strings.Trim(strings.TrimSpace(arr[1]), "'")
 			info.NativeCode = strings.Split(nativeCode, "' '")
 			sort.Strings(info.NativeCode)
